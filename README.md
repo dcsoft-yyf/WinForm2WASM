@@ -51,8 +51,7 @@ System.Windows.Forms.Control类型用于将鼠标键盘事件发送给DCWriter�
 按照这个架构图，我们如下进行分步实现的：
 <br/><span style="color:blue">According to this architecture diagram, we implemented it step by step as follows:</span>
 
-### 3.1.模拟System.Windows.Forms.Control类型
-<br/><span style="color:blue">3.1 Simulate the System.Windows.Forms.Control Type</span>
+### 3.1.模拟System.Windows.Forms.Control类型 | <span style="color:blue"> Simulate the System.Windows.Forms.Control Type</span>
 
 Blazor WASM架构中是没有System.Windows.Forms.dll的，因此我们来创建一个C#类型 public class Control{}。
 <br/><span style="color:blue">There is no System.Windows.Forms.dll in the Blazor WASM architecture, so we create a C# type: public class Control{}.</span>
@@ -69,8 +68,7 @@ Blazor WASM架构中是没有System.Windows.Forms.dll的，因此我们来创建
 然后我们跟着定义周边的类型，比如ScrollableControl、UserControl之类的。由于我们的DCWriter编辑器控件是派生自UserControl，于是一部分DCWriter核心模块形式上开始迁移过来了。
 <br/><span style="color:blue">Then we define the surrounding types accordingly, such as ScrollableControl, UserControl, etc. Since our DCWriter editor control is derived from UserControl, part of the DCWriter core module has formally started to be migrated over.</span>
 
-#### 3.1.1.模拟键盘事件
-<br/><span style="color:blue">3.1.1 Simulate Keyboard Events</span>
+#### 3.1.1.模拟键盘事件 <span style="color:blue"> Simulate Keyboard Events</span>
 
 WinForm.NET程序是靠重写Control.OnKeyUp/OnKeyPres/OnKeyDown虚函数来实现键盘事件。事件参数类型是System.Windows.Forms.KeyEventArgs/KeyPressEventArgs。
 <br/><span style="color:blue">WinForm.NET programs implement keyboard events by overriding the virtual functions Control.OnKeyUp/OnKeyPres/OnKeyDown. The event parameter types are System.Windows.Forms.KeyEventArgs/KeyPressEventArgs.</span>
@@ -93,8 +91,7 @@ WinForm.NET程序是靠重写Control.OnKeyUp/OnKeyPres/OnKeyDown虚函数来实�
 通过类似的方式，我们打通了鼠标点击、移动、拖拽事件的传递通道。
 <br/><span style="color:blue">In a similar way, we have opened up the transmission channel for mouse click, movement, and drag events.</span>
 
-#### 3.1.2.模拟Control.Invalidate(Rectangle)
-<br/><span style="color:blue">3.1.2 Simulate Control.Invalidate(Rectangle)</span>
+#### 3.1.2.模拟Control.Invalidate(Rectangle) | <span style="color:blue"> Simulate Control.Invalidate(Rectangle)</span>
 
 在 WinForm.NET程序中，Control.Invalidate()也是一个非常重要的成员方法需要模拟出来，为此我们定义以下方法：
 <br/><span style="color:blue">In WinForm.NET programs, Control.Invalidate() is also a very important member method that needs to be simulated. For this purpose, we define the following methods:</span>
@@ -114,8 +111,7 @@ WinForm.NET程序是靠重写Control.OnKeyUp/OnKeyPres/OnKeyDown虚函数来实�
 通过这4个方法以Control.Invalidate() 牵头串联在一起，共同完成用户界面的主动局部重绘的功能。
 <br/><span style="color:blue">These 4 methods are connected together led by Control.Invalidate() to jointly complete the function of active partial redrawing of the user interface.</span>
 
-### 3.2.模拟System.Drawing.Graphcis类型
-<br/><span style="color:blue">3.2 Simulate the System.Drawing.Graphics Type</span>
+### 3.2.模拟System.Drawing.Graphcis类型 | <span style="color:blue"> Simulate the System.Drawing.Graphics Type</span>
 
 我们在C#端定义了Graphcis类型，其包含的成员如下所示：
 <br/><span style="color:blue">We defined the Graphics type on the C# side, which contains the following members:</span>
@@ -126,8 +122,7 @@ WinForm.NET程序是靠重写Control.OnKeyUp/OnKeyPres/OnKeyDown虚函数来实�
 这样当所有的绘图操作完成，Graphics内部一结算，就可以获得一个包含绘图指令的字节数组，然后返回给JS端。
 <br/><span style="color:blue">In this way, when all drawing operations are completed, the internal settlement of Graphics can obtain a byte array containing drawing instructions, which is then returned to the JS side.</span>
 
-#### 3.2.1.模拟Graphics.MeasureString()
-<br/><span style="color:blue">3.2.1 Simulate Graphics.MeasureString()</span>
+#### 3.2.1.模拟Graphics.MeasureString() | <span style="color:blue"> Simulate Graphics.MeasureString()</span>
 
 这里还有一个非常重要的成员方法MeasureString()需要进行模拟，这个方法用于测量字符的显示宽度，直接决定了文档的排版结果。
 <br/><span style="color:blue">There is another very important member method MeasureString() that needs to be simulated. This method is used to measure the display width of characters, which directly determines the typesetting result of the document.</span>
@@ -147,8 +142,7 @@ WinForm.NET程序是靠重写Control.OnKeyUp/OnKeyPres/OnKeyDown虚函数来实�
 4.基于这些字体快照信息，我们就可以模拟出MeasureString()。实践证明这个方法的计算速度非常快，而且其计算结果与原生MeasureString()的计算结果高度一致。
 <br/><span style="color:blue">4. Based on this font snapshot information, we can simulate MeasureString(). Practice has proved that this method has a very fast calculation speed, and its calculation results are highly consistent with those of the native MeasureString().</span>
 
-#### 3.2.2.打印
-<br/><span style="color:blue">3.2.2 Printing</span>
+#### 3.2.2.打印 <span style="color:blue"> Printing</span>
 
 我们会在JS中使用window.print()方法来执行打印，但打印HtmlCanvasElement会出现结果模糊的问题，这是由于打印机DPI远超显示器DPI而导致。因此我们使用SVG的模式进行高清打印。
 <br/><span style="color:blue">We use the window.print() method in JS to perform printing, but printing HtmlCanvasElement will result in blurry results, which is caused by the printer's DPI being much higher than the display's DPI. Therefore, we use SVG mode for high-definition printing.</span>
@@ -156,14 +150,12 @@ WinForm.NET程序是靠重写Control.OnKeyUp/OnKeyPres/OnKeyDown虚函数来实�
 为此，我们在C#端使用一个SVG指令翻译器来实现该功能。对于Graphics新增SVG打印模式。比如对于Graphics.DrawLine()，当Graphics处于SVG打印模式，则输出的不是二进制数据，而是输出SVG代码，例如<line x1="74" y1="121.5" x2="720" y2="121.5" stroke="Black"></line>。最后将SVG代码字符串传递到JS端，然后使用动态创建SVG元素来承载这些SVG代码，实现高清打印。
 <br/><span style="color:blue">To this end, we use an SVG instruction translator on the C# side to implement this function. Add SVG printing mode for Graphics. For example, for Graphics.DrawLine(), when Graphics is in SVG printing mode, it outputs not binary data but SVG code, such as <line x1="74" y1="121.5" x2="720" y2="121.5" stroke="Black"></line>. Finally, pass the SVG code string to the JS side, and then use dynamically created SVG elements to carry the SVG code to achieve high-definition printing.</span>
 
-#### 3.2.3. JS端DCBinaryReader类
-<br/><span style="color:blue">3.2.3 DCBinaryReader Class on JS Side</span>
+#### 3.2.3. JS端DCBinaryReader类 | <span style="color:blue"> DCBinaryReader Class on JS Side</span>
 
 我们定义了一个JS类 class DCBinaryReader {}。它在DataView的基础上实现了一个向前的二进制数据读取器。用于简化后续操作。
 <br/><span style="color:blue">We defined a JS class class DCBinaryReader {}. It implements a forward binary data reader based on DataView, which is used to simplify subsequent operations.</span>
 <br/><img src="images/10.png?raw=true" /><br/>
-#### 3.2.4. JS端PageContentDrawer类
-<br/><span style="color:blue">3.2.4 PageContentDrawer Class on JS Side</span>
+#### 3.2.4. JS端PageContentDrawer类 | <span style="color:blue">3.2.4 PageContentDrawer Class on JS Side</span>
 
 我们定义了一个JS类class PageContentDrawer{}。它获得C#端Graphics对象生成的二进制数组，使用DCBinaryReader封装一下，然后在一个HTML的CANVAS元素上进行绘制。主体代码如图：
 <br/><span style="color:blue">We defined a JS class class PageContentDrawer{}. It obtains the binary array generated by the Graphics object on the C# side, encapsulates it with DCBinaryReader, and then draws on an HTML CANVAS element. The main code is shown in the figure:</span>
