@@ -1,6 +1,6 @@
 # WinForm2WASM
 Migrate WinForm.NET Code to Blazor WASM Platform. 
-<br />Long-term goal: To migrate WinForm.NET programs to the Blazor WASM platform by modifying less than 5%-10% of the code volume.
+<br />The long-term goal is to migrate the WinForm.NET program to Blazor WASM. Excluding factors such as the security limitations of the browser sandbox, the amount of modified code is 5%-10%.
 # 如何将WinForm.NET代码迁移到Blazor WASM平台上
 <span style="blue">How to Migrate WinForm.NET Code to Blazor WASM Platform</span>
 
