@@ -32,8 +32,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Demo.WinFormCalculator\CalculatorForm.cs" />
+    <Content Remove="wwwroot\Demo.WinFormCalculator\CalculatorForm.Designer.cs" />
+    <Content Remove="wwwroot\Demo.WinFormCalculator\WasmProgram.cs" />
     <Content Remove="wwwroot\_framework\DCResourceStrings-en.js" />
     <Content Remove="wwwroot\_framework\DCResourceStrings-zh.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="wwwroot\Demo.WinFormCalculator\CalculatorForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wwwroot\Demo.WinFormCalculator\CalculatorForm.Designer.cs" />
+    <Compile Include="wwwroot\Demo.WinFormCalculator\WasmProgram.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +72,18 @@
     <Reference Include="DCSoft.WinForm2WASM">
       <HintPath>Lib\DCSoft.WinForm2WASM.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="published\Demo.WinFormCalculator\CalculatorForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
