@@ -1,4 +1,4 @@
-﻿# !! Make WinForm.NET Great Again | 让 WinForm.NET 再次伟大 !!
+﻿# Make WinForm.NET Great Again !!
 
 ## Update Log | 更新日志
 -  2026-1-4 :Frist blood [https://dcsoft-yyf.github.io/WinForm2WASM/](https://dcsoft-yyf.github.io/WinForm2WASM/)
