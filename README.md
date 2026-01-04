@@ -1,5 +1,7 @@
 ﻿# Make WinForm.NET Great Again !!
 
+<img src="https://github.com/dcsoft-yyf/WinForm2WASM/blob/main/MWGA.png?raw=true"/>
+
 ## Update Log | 更新日志
 -  2026-1-4 :Frist blood [https://dcsoft-yyf.github.io/WinForm2WASM/](https://dcsoft-yyf.github.io/WinForm2WASM/)
 ## Current Status of Global WinForm.NET Modernization | 全球 WinForm.NET 现代化现状
